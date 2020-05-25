@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".asynctask.AsyncActivity"/>
+
+        <activity android:name=".handlerthread.HandlerActivity"/>
     </application>
 
 </manifest>
