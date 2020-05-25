@@ -44,6 +44,7 @@ class HandlerActivity : AppCompatActivity() {
         stopThread.setOnClickListener {
             if (handlerThread.isAlive) {
                 handlerThread.interrupt()
+                handlerThread.quitSafely()
             }
             Toast.makeText(this@HandlerActivity, "$STOP", Toast.LENGTH_LONG).show()
         }
@@ -65,8 +66,12 @@ class HandlerActivity : AppCompatActivity() {
             override fun handleMessage(msg: Message) {
                 super.handleMessage(msg)
                 val urls = msg.obj as Array<String>
-                urls.forEach {
-                    downloadFile(it)
+                for (url in urls) {
+                    try {
+                        downloadFile(url)
+                    } catch (e: InterruptedException) {
+                        break
+                    }
                 }
             }
         }
@@ -88,7 +93,7 @@ class HandlerActivity : AppCompatActivity() {
                 Thread.sleep(i.toLong())
             } catch (e: InterruptedException) {
                 e.printStackTrace()
-                return ERROR
+                throw e
             }
         }
         return SUCCESS
@@ -100,52 +105,4 @@ class HandlerActivity : AppCompatActivity() {
         workHandler.removeCallbacksAndMessages(null)
         handlerThread.quitSafely()
     }
-
-//    inner class CustomHandler(looper: Looper) : Handler() {
-//
-//        var s = Stack<Message>()
-//        var is_stop = false
-//
-//        fun pause() {
-//            is_stop = true
-//        }
-//
-//        fun resume() {
-//            is_stop = false
-//            while (!s.empty()) {
-//                sendMessageAtFrontOfQueue(s.pop())
-//            }
-//        }
-//
-//        override fun handleMessage(msg: Message) {
-//            if (is_stop) {
-//                s.push(Message.obtain(msg))
-//                return
-//            } else {
-//                super.handleMessage(msg)
-//                val urls = msg.obj as Array<String>
-//                urls.forEach {
-//                    downloadFile(it)
-//                }
-//            }
-//        }
-//
-//        private fun downloadFile(url: String): String {
-//            for (i in 0..100) {
-//                this@HandlerActivity.progressBarThread.progress = i
-//                textViewThread.text = "Download Progress for $url：$i %"
-//
-//                println(i)
-//                println(url)
-//                println(textViewThread.text)
-//                try {
-//                    Thread.sleep(i.toLong())
-//                } catch (e: InterruptedException) {
-//                    e.printStackTrace()
-//                    return ERROR
-//                }
-//            }
-//            return SUCCESS
-//        }
-//    }
 }
