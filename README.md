@@ -130,8 +130,6 @@ Check next sector
 [Google MVVM Archtecture](https://developer.android.com/jetpack/docs/guide)
 
 
-===========================================================================================================
-
 # Andorid Dependency Injection
 
 ## Why DI?

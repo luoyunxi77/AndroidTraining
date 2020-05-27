@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AndroidTraining</string>
+    <string name="app_name">Dependency Injection</string>
+    <string name="response">Refresh Response</string>
 </resources>
