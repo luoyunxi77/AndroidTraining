@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidtraining.AdviceRepo
 import com.example.androidtraining.AdviceService
+import com.example.androidtraining.CustomViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
@@ -24,7 +25,8 @@ class CustomModule {
 
     @Singleton
     @Provides
-    fun providesAdviceRepo(service: AdviceService) = AdviceRepo(service)
+    fun providesAdviceRepo(service: AdviceService) =
+        AdviceRepo(service)
 
     @IntoMap
     @ViewModelKey(CustomViewModel::class)
@@ -33,7 +35,6 @@ class CustomModule {
         CustomViewModel(adviceRepo)
 
     @Provides
-    @Singleton
     fun providersViewModelFactory(viewModelProviderMap: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>) =
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
