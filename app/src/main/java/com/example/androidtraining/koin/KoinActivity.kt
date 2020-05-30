@@ -27,16 +27,15 @@ class KoinActivity : AppCompatActivity() {
 
         swipeRefreshLayout_Koin.setOnRefreshListener {
             customViewModel.load()
-            swipeRefreshLayout_Koin.isRefreshing = false
         }
 
         customViewModel.result.observe(this, Observer {
-            if (it.first == SUCCESS) {
-                responseKoin.text = it.second
-            } else {
-                responseKoin.visibility = View.GONE
-                Toast.makeText(this, "${it.second}", Toast.LENGTH_SHORT).show()
-            }
+            updateResponse(it)
         })
+    }
+
+    private fun updateResponse(advice: String) {
+        swipeRefreshLayout_Koin.isRefreshing = false
+        responseKoin.text = advice
     }
 }

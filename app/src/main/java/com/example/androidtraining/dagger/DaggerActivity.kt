@@ -12,6 +12,7 @@ import com.example.androidtraining.CustomViewModel
 import com.example.androidtraining.MainActivity.Companion.SUCCESS
 import com.example.androidtraining.R
 import kotlinx.android.synthetic.main.activity_dagger.*
+import kotlinx.android.synthetic.main.activity_koin.*
 import javax.inject.Inject
 
 class DaggerActivity : AppCompatActivity() {
@@ -30,21 +31,22 @@ class DaggerActivity : AppCompatActivity() {
         loadView()
     }
 
+
     private fun loadView() {
         swipeRefreshLayout_Dagger.setColorSchemeResources(android.R.color.holo_blue_bright)
 
         swipeRefreshLayout_Dagger.setOnRefreshListener {
             viewModel.load()
-            swipeRefreshLayout_Dagger.isRefreshing = false
         }
 
         viewModel.result.observe(this, Observer {
-            if (it.first == SUCCESS) {
-                responseDagger.text = it.second
-            } else {
-                responseDagger.visibility = View.GONE
-                Toast.makeText(this, "${it.second}", Toast.LENGTH_SHORT).show()
-            }
+            updateResponse(it)
         })
     }
+
+    private fun updateResponse(advice: String) {
+        swipeRefreshLayout_Dagger.isRefreshing = false
+        responseDagger.text = advice
+    }
+
 }
